@@ -97,39 +97,41 @@ function scene:create( event )
     }             
 }
 
-    Knight = display.newSprite( sheetIdleKnight, sequence_data_ninja )
-    Knight.x = display.contentWidth * 0.5
-    Knight.y = 0
-    Knight.id = "knight"
-    knight.sequence = "idle"
-    -- add physics
-    physics.addBody(Knight, "dynamic", {
-        density = 2.5,
-        friction = 0.1,
-        bounce = 0.2
-        })
-    Knight.isFixedRotation = true -- If you apply this property before the physics.addBody() command for the object, it will merely be treated as a property of the object like any other custom property and, in that case, it will not cause any physical change in terms of locking rotation. 
 
-    Knight:setSequence( "idle" )
-    Knight:play()
+Knight = display.newSprite( sheetIdleKnight, sequence_data_ninja )
+Knight.x = display.contentWidth * 0.5
+Knight.y = 0
+Knight.id = "knight"
+knight.sequence = "idle"
+ -- add physics
+physics.addBody(Knight, "dynamic", {
+    density = 2.5,
+    friction = 0.1,
+    bounce = 0.2
+    })
+Knight.isFixedRotation = true -- If you apply this property before the physics.addBody() command for the object, it will merely be treated as a property of the object like any other custom property and, in that case, it will not cause any physical change in terms of locking rotation. 
 
-    -- add right arrow
-    rightArrow = display.newImage("./assets/sprites/tightButton.png")
-    rightArrow.x = 268
-    rightArrow.y = display.contentHeight - 150
-    rightArrow.alpha = 0.5
-    rightArrow.id = "right arrow"
+Knight:setSequence( "idle" )
+Knight:play()
+
+-- add right arrow
+rightArrow = display.newImage("./assets/sprites/tightButton.png")
+rightArrow.x = 268
+rightArrow.y = display.contentHeight - 150
+rightArrow.alpha = 0.5
+rightArrow.id = "right arrow"
 
 
-    local filename = "assets/maps/level0.json" 
-    local mapData = json.decodeFile( system.pathForFile( filename, system.ResourceDirectory ) )
-    map = tiled.new( mapData, "assets/maps" )
+local filename = "assets/maps/level0.json" 
+local mapData = json.decodeFile( system.pathForFile( filename, system.ResourceDirectory ) )
+map = tiled.new( mapData, "assets/maps" )
 
-    sceneGroup:insert( map )
-    sceneGroup:insert( Knight )
-    sceneGroup:insert( rightArrow )
- 
+sceneGroup:insert( map )
+sceneGroup:insert( Knight )
+sceneGroup:insert( rightArrow )
+
 end
+
  
  
 -- show()
