@@ -70,6 +70,18 @@ function scene:create( event )
     physics.setGravity(0, 32)
     --physics.setDrawMode("hybrid")
 
+end
+
+ 
+ 
+-- show()
+function scene:show( event )
+ 
+    local sceneGroup = self.view
+    local phase = event.phase
+ 
+    if ( phase == "will" ) then
+  
     -- get character
     local sheetOptionsIdle = require("assets.spritesheets.knight.knightIdle")
     local sheetIdleKnight = graphics.newImageSheet("./assets/spritesheets/knight/knightIdle.png", sheetOptionsIdle:getSheet() )
@@ -130,17 +142,6 @@ sceneGroup:insert( map )
 sceneGroup:insert( Knight )
 sceneGroup:insert( rightArrow )
 
-end
-
- 
- 
--- show()
-function scene:show( event )
- 
-    local sceneGroup = self.view
-    local phase = event.phase
- 
-    if ( phase == "will" ) then
         -- add in code to check character movement
         rightArrow:addEventListener( "touch", onRightArrowTouch )
  
