@@ -46,11 +46,11 @@ local function onRightArrowTouch( event )
     
 end
 
-local moveKnight = function (event)
+local moveKnight = function( event )
     
     if knight.sequence == "run" then
-        transition.moveby( knight, {
-            x = 10,
+        transition.moveBy( knight, {
+            x = 20,
             y = 0,
             time = 0
             })
@@ -69,19 +69,6 @@ function scene:create( event )
     physics.start()
     physics.setGravity(0, 32)
     --physics.setDrawMode("hybrid")
-
-end
-
- 
- 
--- show()
-function scene:show( event )
- 
-    local sceneGroup = self.view
-    local phase = event.phase
- 
-    if ( phase == "will" ) then
-  
     -- get character
     local sheetOptionsIdle = require("assets.spritesheets.knight.knightIdle")
     local sheetIdleKnight = graphics.newImageSheet("./assets/spritesheets/knight/knightIdle.png", sheetOptionsIdle:getSheet() )
@@ -103,45 +90,52 @@ function scene:show( event )
         name = "run",
         start = 1,
         count = 10,
-        time = 800,
+        time = 1000,
         loopCount = 0,
-        sheet = sheetRunnungKnight
+        sheet = sheetRunningKnight
     }             
 }
+        knight = display.newSprite( sheetIdleKnight, sequence_data_ninja )
+        knight.x = display.contentWidth * 0.5
+        knight.y = 0
+        knight.id = "knight"
+        knight.sequence = "idle"
+        -- add physics
+        physics.addBody(knight, "dynamic", {
+            density = 2.5,
+            friction = 0.1,
+            bounce = 0.2
+            })
+        knight.isFixedRotation = true -- If you apply this property before the physics.addBody() command for the object, it will merely be treated as a property of the object like any other custom property and, in that case, it will not cause any physical change in terms of locking rotation. 
 
+        knight:setSequence( "idle" )
+        knight:play()
 
-Knight = display.newSprite( sheetIdleKnight, sequence_data_ninja )
-Knight.x = display.contentWidth * 0.5
-Knight.y = 0
-Knight.id = "knight"
-knight.sequence = "idle"
- -- add physics
-physics.addBody(Knight, "dynamic", {
-    density = 2.5,
-    friction = 0.1,
-    bounce = 0.2
-    })
-Knight.isFixedRotation = true -- If you apply this property before the physics.addBody() command for the object, it will merely be treated as a property of the object like any other custom property and, in that case, it will not cause any physical change in terms of locking rotation. 
+        -- add right arrow
+        rightArrow = display.newImage("./assets/sprites/rightButton.png")
+        rightArrow.x = 268
+        rightArrow.y = display.contentHeight - 150
+        rightArrow.alpha = 0.5
+        rightArrow.id = "right arrow"
 
-Knight:setSequence( "idle" )
-Knight:play()
+        local filename = "assets/maps/level0.json" 
+        local mapData = json.decodeFile( system.pathForFile( filename, system.ResourceDirectory ) )
+        map = tiled.new( mapData, "assets/maps" )
 
--- add right arrow
-rightArrow = display.newImage("./assets/sprites/tightButton.png")
-rightArrow.x = 268
-rightArrow.y = display.contentHeight - 150
-rightArrow.alpha = 0.5
-rightArrow.id = "right arrow"
+        sceneGroup:insert( map )
+        sceneGroup:insert( knight )
+        sceneGroup:insert( rightArrow )
 
-
-local filename = "assets/maps/level0.json" 
-local mapData = json.decodeFile( system.pathForFile( filename, system.ResourceDirectory ) )
-map = tiled.new( mapData, "assets/maps" )
-
-sceneGroup:insert( map )
-sceneGroup:insert( Knight )
-sceneGroup:insert( rightArrow )
-
+end
+ 
+ 
+-- show()
+function scene:show( event )
+ 
+    local sceneGroup = self.view
+    local phase = event.phase
+ 
+    if ( phase == "will" ) then
         -- add in code to check character movement
         rightArrow:addEventListener( "touch", onRightArrowTouch )
  
